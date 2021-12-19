@@ -14,7 +14,7 @@ class DiGraph(GraphInterface):
         empty constructor for DiGraph class
         """
         self.mode_count = 0
-        self.edges = {}
+        self.edges = []
         self.nodes = {}
 
     # def from_json(self,file:str):
@@ -91,14 +91,12 @@ class DiGraph(GraphInterface):
             if id2 in self.edges[id1]:
                 return False
 
-        edge = Edge(id1,id2,weight)     # create a new Edge from the given data
-        self.edges[id1][id2] = edge     # add the edge to the dict
+        edge = Edge(id1, id2, weight)  # create a new Edge from the given data
+        self.edges.append(edge)
         self.nodes[id1].edges_out[id2] = edge
         self.nodes[id2].edges_in[id1] = edge
-        self.mode_count += 1        # update mode counter
+        self.mode_count += 1  # update mode counter
         return True
-
-
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         """
@@ -114,11 +112,14 @@ class DiGraph(GraphInterface):
             return False
 
         # creates a new Node
-        x = pos[0]
-        y = pos[1]
-        z = pos[2]
-        pos = GeoLocation(x,y,z)
-        node = Node(pos,node_id)
+        if pos is not None:
+            x = pos[0]
+            y = pos[1]
+            z = pos[2]
+            pos = GeoLocation(x, y, z)
+            node = Node(pos, node_id)
+        else:
+            node = Node(key=node_id)
         # adds the new node to the Graph
         self.nodes[node_id] = node
         return True
@@ -136,18 +137,21 @@ class DiGraph(GraphInterface):
         if node_id1 not in self.nodes or node_id2 not in self.nodes:
             return False
         # check whether the given edge exists in the graph or not
-        if node_id2 not in self.edges[node_id1]:
-            return False
-
-        # removes the edge from graph
-        del self.edges[node_id1][node_id2]
-        # removes all the edges that getting out of the node
-        del self.nodes[node_id1].edges_out[node_id2]
-        # removes all the edges that getting into the node
-        del self.nodes[node_id2].edges_in[node_id1]
-
-        self.mode_count += 1
-        return True
+        x = False
+        for i, edge in enumerate(self.edges):
+            if edge.src == node_id1 and edge.dest == node_id2:
+                self.edges.remove(self.edges[i])
+                x = True
+                break
+        if x:
+            # removes all the edges that getting out of the node
+            del self.nodes[node_id1].edges_out[node_id2]
+            # removes all the edges that getting into the node
+            del self.nodes[node_id2].edges_in[node_id1]
+            self.mode_count += 1
+            return x
+        else:
+            return x
 
     def remove_node(self, node_id: int) -> bool:
         """
@@ -160,17 +164,17 @@ class DiGraph(GraphInterface):
         if node_id not in self.nodes:
             return False
 
-
-        for node in self.nodes:
+        for node in self.nodes.values():
             # removes all the edges that getting into the node
-            del node.edges_in[node_id]
+            if node_id in node.edges_in:
+                del node.edges_in[node_id]
             # removes all the edges that getting out of the node
-            del node.edges_out[node_id]
+            if node_id in node.edges_out:
+                del node.edges_out[node_id]
 
-        for edge in self.edges:
-            # removes all the edges that contains the node (whether as source or dest)
+        for i, edge in enumerate(self.edges):
             if edge.src == node_id or edge.dest == node_id:
-                del edge
+                self.edges.remove(self.edges[i])
 
         # deletes the particular node from the Graph
         del self.nodes[node_id]
@@ -179,6 +183,5 @@ class DiGraph(GraphInterface):
 
         return True
 
-
-
-
+    def __repr__(self):
+        return "Graph: |V|={} , |E|={}".format(self.v_size(), self.e_size())

@@ -18,8 +18,8 @@ class Node(object):
         if pos is not None:
             self.pos: GeoLocation = pos
         self.tag: int = 0
-        self.edges_in = None
-        self.edges_out = None
+        self.edges_in = {}
+        self.edges_out = {}
         self.weight: float = 0.0
         self.info: str = ""
 
