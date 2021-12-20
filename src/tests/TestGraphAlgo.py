@@ -27,4 +27,14 @@ class TestGraphAlgo(unittest.TestCase):
         if graph_algo.load_from_json(self.file_name) is True:
             assert isinstance(graph_algo.get_graph(), GraphInterface.GraphInterface), "returned graph instead of None"
 
-    
+    def test_shortest_path(self):
+        graph_algo = GraphAlgo()
+        graph_algo.load_from_json(self.file_name)
+
+        dist, path = graph_algo.shortest_path(0, 7)
+        self.assertEqual(dist, 5.653293226161572)
+        self.assertEqual([0, 10, 9, 8, 7], path)
+
+        dist, path = graph_algo.shortest_path(0, 8888887)
+        self.assertEqual(dist, -1)
+        self.assertEqual(path, [])

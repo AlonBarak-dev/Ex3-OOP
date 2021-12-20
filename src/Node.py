@@ -22,6 +22,7 @@ class Node(object):
         self.weight: float = 0.0
         self.info: str = ""
 
+
     @classmethod
     def from_dict(cls, data: dict) -> 'Node':
         """
