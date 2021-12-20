@@ -113,9 +113,29 @@ class TestDiGraph(unittest.TestCase):
         size = self.graph.e_size()
         assert size == 5, "five edges in graph"
         assert self.graph.add_edge(4,0,4.78) is False, "duplicates"
+        assert self.graph.add_edge(4,0,0.0) is False, "duplicates"
         size = self.graph.e_size()
         assert size == 5, "still five edges in graph"
 
-    # def test_remove_edge(self):
-    #
-    # def test_remove_node(self):
+    def test_remove_edge(self):
+        self.build_graph()
+        size = self.graph.e_size()
+        assert size == 5, "five edges in graph"
+        self.graph.remove_edge(0, 1)
+        size = self.graph.e_size()
+        assert size == 4, "four edges in graph after delete"
+        self.graph.remove_edge(0, 1)        # try to delete (0,1) again
+        size = self.graph.e_size()
+        assert size == 4, "still four edges in graph after delete"
+
+    def test_remove_node(self):
+        self.build_graph()
+        size_v = self.graph.v_size()
+        size_e = self.graph.e_size()
+        assert size_e == 5, "five edges in graph"
+        assert size_v == 5, "five nodes in graph"
+        self.graph.remove_node(0)       # removing the 0th node
+        size_v = self.graph.v_size()
+        size_e = self.graph.e_size()
+        assert size_e == 3, "five edges in graph"
+        assert size_v == 4, "five nodes in graph"

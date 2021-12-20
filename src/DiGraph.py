@@ -171,10 +171,13 @@ class DiGraph(GraphInterface):
             # removes all the edges that getting out of the node
             if node_id in node.edges_out:
                 del node.edges_out[node_id]
-
-        for i, edge in enumerate(self.edges):
+        # remove all edges coming in/out of the given node
+        remove_list = []
+        for edge in self.edges:
             if edge.src == node_id or edge.dest == node_id:
-                self.edges.remove(self.edges[i])
+                remove_list.append(edge)
+        for edge in remove_list:
+            self.edges.remove(edge)
 
         # deletes the particular node from the Graph
         del self.nodes[node_id]
