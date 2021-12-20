@@ -86,8 +86,8 @@ class DiGraph(GraphInterface):
         if id1 not in self.nodes or id2 not in self.nodes:
             return False
         # check whether the given edge already exists in the Graph or not
-        if id1 in self.edges:
-            if id2 in self.edges[id1]:
+        for i, edge in enumerate(self.edges):
+            if edge.src == id1 and edge.dest == id2:
                 return False
 
         edge = Edge(id1, id2, weight)  # create a new Edge from the given data
@@ -121,6 +121,7 @@ class DiGraph(GraphInterface):
             node = Node(key=node_id)
         # adds the new node to the Graph
         self.nodes[node_id] = node
+        self.mode_count += 1    # update mode counter
         return True
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
@@ -147,7 +148,7 @@ class DiGraph(GraphInterface):
             del self.nodes[node_id1].edges_out[node_id2]
             # removes all the edges that getting into the node
             del self.nodes[node_id2].edges_in[node_id1]
-            self.mode_count += 1
+            self.mode_count += 1    # update mode counter
             return x
         else:
             return x
@@ -178,16 +179,26 @@ class DiGraph(GraphInterface):
         # deletes the particular node from the Graph
         del self.nodes[node_id]
 
-        self.mode_count += 1
+        self.mode_count += 1    # update mode counter
 
         return True
 
     def add_node2(self, other: Node):
+        """
+        add a Node to the graph.
+        :param other: the Node which will be added to the Graph
+        :return: True if possible, False if not
+        """
         if other.get_pos() is not None:
             return self.add_node(other.get_key(), other.get_pos().to_tuple())
         return self.add_node(other.get_key())
 
     def add_edge2(self, other: Edge):
+        """
+       add an Edge to the graph.
+       :param other: the Edge which will be added to the Graph
+       :return: True if possible, False if not
+       """
         return self.add_edge(other.src, other.dest, other.weight)
 
     def __repr__(self):
