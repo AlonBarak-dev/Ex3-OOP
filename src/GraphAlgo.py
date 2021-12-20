@@ -16,8 +16,8 @@ class GraphAlgo(GraphAlgoInterface):
     It allows the User to run different algorithms on the Graph
     """
 
-    def __init__(self, g: GraphInterface = None):
-        self.graph: DiGraph = g
+    def __init__(self):
+        self.graph: DiGraph = DiGraph()
 
     def get_graph(self) -> GraphInterface:
         return self.graph

@@ -26,7 +26,7 @@ class Edge(object):
 
         src = int(data.get('src'))
         dest = int(data.get('dest'))
-        weight = float(data.get('weight'))
+        weight = float(data.get('w'))
 
         return cls(src=src, dest=dest, weight=weight)
 

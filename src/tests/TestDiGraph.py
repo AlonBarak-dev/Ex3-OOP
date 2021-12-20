@@ -39,7 +39,20 @@ class TestDiGraph(unittest.TestCase):
         self.graph.add_edge2(self.edge31)
         self.graph.add_edge2(self.edge24)
 
+    def reset_graph(self):
+        """
+        reset the graph every call.
+        used in the tests below.
+        """
+        self.graph.remove_node(0)
+        self.graph.remove_node(1)
+        self.graph.remove_node(2)
+        self.graph.remove_node(3)
+        self.graph.remove_node(4)
+        self.graph.mode_count = 0
+
     def test_v_size(self):
+        self.reset_graph()
         self.build_graph()
         size = self.graph.v_size()
         assert size == 5, "wrong vertex size"
@@ -48,6 +61,7 @@ class TestDiGraph(unittest.TestCase):
         assert size == 4, "should've changed to 4"
 
     def test_e_size(self):
+        self.reset_graph()
         self.build_graph()
         size = self.graph.e_size()
         assert size == 5, "wrong edges size"
@@ -56,6 +70,7 @@ class TestDiGraph(unittest.TestCase):
         assert size == 4, "should've been 4 edges left after delete"
 
     def test_get_all_v(self):
+        self.reset_graph()
         self.build_graph()
         allV = self.graph.get_all_v()
         size = self.graph.v_size()
@@ -64,6 +79,7 @@ class TestDiGraph(unittest.TestCase):
             assert v.key == k
 
     def test_all_in_edges_of_node(self):
+        self.reset_graph()
         self.build_graph()
         self.graph.add_edge(1, 4, 0)
         self.graph.add_edge(3, 4, 0)
@@ -73,6 +89,7 @@ class TestDiGraph(unittest.TestCase):
             assert i in in_edges.keys(), "4th node have edges from any other node in the graph!"
 
     def test_all_out_edges_of_node(self):
+        self.reset_graph()
         self.build_graph()
         self.graph.add_edge(0, 2, 0)
         self.graph.add_edge(0, 3, 0)
@@ -82,11 +99,13 @@ class TestDiGraph(unittest.TestCase):
             assert i in out_edges.keys(), "0th node have edges to any other node in the graph!"
 
     def test_get_mc(self):
+        self.reset_graph()
         self.build_graph()
         mc = self.graph.get_mc()
         assert mc == 10, "10 changes happens in build_graph() method"
 
     def test_add_node(self):
+        self.reset_graph()
         assert self.graph.v_size() == 0, "No vertexes in graph"
         assert self.graph.add_node(node_id=0) is True, "no duplicates"
         assert self.graph.add_node(node_id=1) is True, "no duplicates"
@@ -98,6 +117,7 @@ class TestDiGraph(unittest.TestCase):
         assert self.graph.v_size() == 5, "still five vertexes in graph"
 
     def test_add_edge(self):
+        self.reset_graph()
         self.graph.add_node2(self.node0)
         self.graph.add_node2(self.node1)
         self.graph.add_node2(self.node2)
@@ -118,6 +138,7 @@ class TestDiGraph(unittest.TestCase):
         assert size == 5, "still five edges in graph"
 
     def test_remove_edge(self):
+        self.reset_graph()
         self.build_graph()
         size = self.graph.e_size()
         assert size == 5, "five edges in graph"
@@ -129,6 +150,7 @@ class TestDiGraph(unittest.TestCase):
         assert size == 4, "still four edges in graph after delete"
 
     def test_remove_node(self):
+        self.reset_graph()
         self.build_graph()
         size_v = self.graph.v_size()
         size_e = self.graph.e_size()
@@ -137,5 +159,8 @@ class TestDiGraph(unittest.TestCase):
         self.graph.remove_node(0)       # removing the 0th node
         size_v = self.graph.v_size()
         size_e = self.graph.e_size()
-        assert size_e == 3, "five edges in graph"
-        assert size_v == 4, "five nodes in graph"
+        assert size_e == 3, "3 edges in graph"
+        assert size_v == 4, "4 nodes in graph"
+
+if __name__ == '__main__':
+    unittest.main()

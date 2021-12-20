@@ -31,14 +31,13 @@ class Node(object):
         """
 
         # check for None values and raise exception
-        if 'id' not in data or 'key' not in data:
-            raise ValueError("Cant create a Node without id and data")
+        # if 'id' not in data or 'key' not in data:
+        #     raise ValueError("Cant create a Node without id and data")
 
         key = int(data.get('id'))  # initialize the node ID
 
         # initialize the node location
-        pos = data.get('GeoLocation')
-        pos = "{},{},{}".format(pos['x'], pos['y'], pos['z'])  # convert str to dict
+        pos = data.get('pos')
         if pos is not None:
             pos = GeoLocation(*pos.split(','))  # create new GeoLocation
 
