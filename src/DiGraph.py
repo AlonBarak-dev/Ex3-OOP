@@ -8,7 +8,6 @@ from src.GeoLocation import GeoLocation
 
 class DiGraph(GraphInterface):
 
-
     def __init__(self):
         """
         empty constructor for DiGraph class
@@ -100,7 +99,8 @@ class DiGraph(GraphInterface):
         @return: True if the node was added successfully, False o.w.
         Note: if the node id already exists the node will not be added
         """
-
+        if node_id is None:
+            return False
         # check whether the node already exists in the Graph or not
         if node_id in self.nodes:
             return False
@@ -116,7 +116,7 @@ class DiGraph(GraphInterface):
             node = Node(key=node_id)
         # adds the new node to the Graph
         self.nodes[node_id] = node
-        self.mode_count += 1    # update mode counter
+        self.mode_count += 1  # update mode counter
         return True
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
@@ -143,7 +143,7 @@ class DiGraph(GraphInterface):
             del self.nodes[node_id1].edges_out[node_id2]
             # removes all the edges that getting into the node
             del self.nodes[node_id2].edges_in[node_id1]
-            self.mode_count += 1    # update mode counter
+            self.mode_count += 1  # update mode counter
             return x
         else:
             return x
@@ -177,7 +177,7 @@ class DiGraph(GraphInterface):
         # deletes the particular node from the Graph
         del self.nodes[node_id]
 
-        self.mode_count += 1    # update mode counter
+        self.mode_count += 1  # update mode counter
 
         return True
 
@@ -202,20 +202,17 @@ class DiGraph(GraphInterface):
     def __repr__(self):
         return "Graph: |V|={} , |E|={}".format(self.v_size(), self.e_size())
 
-
     def to_dict(self) -> dict:
 
-        dict_res = {'Edges': {},
-                'Nodes': {}}
+        dict_res = {'Edges': [],
+                    'Nodes': []}
 
-        for node in self.nodes:
+        for node in self.nodes.values():
             node_dict = node.to_dict()
-            dict_res['Nodes'][node.key] = node_dict
+            dict_res['Nodes'].append(node_dict)
 
-        i = 0
         for edge in self.edges:
             edge_dict = edge.to_dict()
-            dict_res['Edges'][i] = edge
-            i += 1
+            dict_res['Edges'].append(edge_dict)
 
         return dict_res

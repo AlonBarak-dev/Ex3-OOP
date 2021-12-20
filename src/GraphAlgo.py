@@ -28,6 +28,7 @@ class GraphAlgo(GraphAlgoInterface):
         @param file_name: The path to the json file
         @returns True if the loading was successful, False o.w.
         """
+        self.graph = DiGraph()
         try:  # loading the json file
             with open(file_name, 'r') as file:
                 data = json.loads(file.read())
@@ -56,7 +57,7 @@ class GraphAlgo(GraphAlgoInterface):
         @return: True if the save was successful, False o.w.
         """
         try:
-            with open(file_name, 'r') as file:
+            with open(file_name, 'w+') as file:
                 file.write(json.dumps(self.graph.to_dict()))
             return True
         except:

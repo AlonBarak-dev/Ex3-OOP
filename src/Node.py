@@ -14,7 +14,7 @@ class Node(object):
         :param key: the ID of the Node
         """
 
-        self.key: int = int(key)
+        self.key: int = key
         self.pos: GeoLocation = pos
         self.tag: int = 0
         self.edges_in = {}
@@ -33,8 +33,8 @@ class Node(object):
         # check for None values and raise exception
         # if 'id' not in data or 'key' not in data:
         #     raise ValueError("Cant create a Node without id and data")
+        key: int = data.get('id')  # initialize the node ID
 
-        key = int(data.get('id'))  # initialize the node ID
 
         # initialize the node location
         pos = data.get('pos')
@@ -52,7 +52,7 @@ class Node(object):
         """
         dic = {
             'pos': self.pos.__repr__(),
-            'key': self.key
+            'id': self.key
         }
         return dic
 
