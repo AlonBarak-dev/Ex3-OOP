@@ -32,9 +32,11 @@ class TestGraphAlgo(unittest.TestCase):
         graph_algo.load_from_json(self.file_name)
 
         dist, path = graph_algo.shortest_path(0, 7)
+        #print(path)
         self.assertEqual(dist, 5.653293226161572)
         self.assertEqual([0, 10, 9, 8, 7], path)
 
         dist, path = graph_algo.shortest_path(0, 8888887)
+        #print(path)
         self.assertEqual(dist, -1)
         self.assertEqual(path, [])
