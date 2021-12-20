@@ -8,6 +8,7 @@ from src.GeoLocation import GeoLocation
 
 class DiGraph(GraphInterface):
 
+
     def __init__(self):
         """
         empty constructor for DiGraph class
@@ -15,12 +16,6 @@ class DiGraph(GraphInterface):
         self.mode_count = 0
         self.edges = []
         self.nodes = {}
-
-    # def from_json(self,file:str):
-    #
-    #     with open(file,'r') as f:
-    #         data = json.load(f)     # importing the json file into a dict
-    #
 
     def v_size(self) -> int:
         """
@@ -206,3 +201,21 @@ class DiGraph(GraphInterface):
 
     def __repr__(self):
         return "Graph: |V|={} , |E|={}".format(self.v_size(), self.e_size())
+
+
+    def to_dict(self) -> dict:
+
+        dict_res = {'Edges': {},
+                'Nodes': {}}
+
+        for node in self.nodes:
+            node_dict = node.to_dict()
+            dict_res['Nodes'][node.key] = node_dict
+
+        i = 0
+        for edge in self.edges:
+            edge_dict = edge.to_dict()
+            dict_res['Edges'][i] = edge
+            i += 1
+
+        return dict_res
