@@ -1,4 +1,4 @@
-from GeoLocation import GeoLocation
+from src.GeoLocation import GeoLocation
 from src.Links import Links
 
 
@@ -13,10 +13,9 @@ class Node(object):
         :param pos: GeoLocation of the Node.
         :param key: the ID of the Node
         """
-        if key is not None:
-            self.key: int = int(key)
-        if pos is not None:
-            self.pos: GeoLocation = pos
+
+        self.key: int = int(key)
+        self.pos: GeoLocation = pos
         self.tag: int = 0
         self.edges_in = {}
         self.edges_out = {}
@@ -58,8 +57,6 @@ class Node(object):
         }
         return dic
 
-
-
     def get_geoLocation(self) -> GeoLocation:
         """
         return the position of the Node
@@ -72,7 +69,7 @@ class Node(object):
         set the position of the Node to a new position
         :param geo: GeoLocation object
         """
-        if not isinstance(geo,GeoLocation):
+        if not isinstance(geo, GeoLocation):
             raise ValueError("should be GeoLocation type")
         self.pos = geo
 
@@ -85,5 +82,11 @@ class Node(object):
         self.edges_in = edges.get('EDGES_IN')
         self.edges_out = edges.get('EDGES_OUT')
 
+    def get_key(self) -> int:
+        return self.key
+
+    def get_pos(self) -> GeoLocation:
+        return self.pos
+
     def __repr__(self):
-        return "{}: |edges out| {} |edges in| {}".format(self.key,len(self.edges_out),len(self.edges_in))
+        return "{}: |edges out| {} |edges in| {}".format(self.key, len(self.edges_out), len(self.edges_in))

@@ -28,4 +28,9 @@ class GeoLocation(object):
         dist = sqrt(dx*dx + dy*dy + dz*dz)
         return dist
 
+    def to_tuple(self) -> tuple:
+        ret = [self.x, self.y, self.z]
+        return tuple(ret)
+
+
 

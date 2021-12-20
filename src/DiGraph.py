@@ -1,10 +1,9 @@
 import json
 
 from src.GraphInterface import GraphInterface
-from Edge import Edge
-from Links import Links
-from Node import Node
-from GeoLocation import GeoLocation
+from src.Edge import Edge
+from src.Node import Node
+from src.GeoLocation import GeoLocation
 
 
 class DiGraph(GraphInterface):
@@ -182,6 +181,14 @@ class DiGraph(GraphInterface):
         self.mode_count += 1
 
         return True
+
+    def add_node2(self, other: Node):
+        if other.get_pos() is not None:
+            return self.add_node(other.get_key(), other.get_pos().to_tuple())
+        return self.add_node(other.get_key())
+
+    def add_edge2(self, other: Edge):
+        return self.add_edge(other.src, other.dest, other.weight)
 
     def __repr__(self):
         return "Graph: |V|={} , |E|={}".format(self.v_size(), self.e_size())
