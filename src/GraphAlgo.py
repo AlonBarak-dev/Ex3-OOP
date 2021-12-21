@@ -10,6 +10,7 @@ from src.Node import Node
 from src.GeoLocation import GeoLocation
 from src.DiGraph import DiGraph
 import json
+import matplotlib.pyplot as plt
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -233,5 +234,111 @@ class GraphAlgo(GraphAlgoInterface):
 
         return dest_node, min_dist, final_path
 
-    def plot_graph(self) -> None:
-        pass
+    def centerPoint(self) -> (int, float):
+        """
+        Finds the node that has the shortest distance to it's farthest node,
+        assuming the graph is strongly connected.
+        :return: The nodes id, min-maximum distance
+        """
+        min_max_sp = 999999  # the minimum from the maximum shortest paths
+        chosen_node = -1  # ID of the center
+
+        for node in self.graph.get_all_v().values():
+
+            max_sp = self.max_shortest_path(node.key)
+            if max_sp < min_max_sp:
+                min_max_sp = max_sp
+                chosen_node = node.key
+
+        return chosen_node, min_max_sp
+
+    def max_shortest_path(self, key) -> float:
+        """
+        This method finds the shortest paths from given node to all other
+        nodes in the graph using dijkstra algorithm.
+        the method return the maximum shortest path it finds.
+        """
+        self.reset_tags()  # reset all tags to 0 -> NOT VISITED
+
+        source = key
+        deltas: Dict[int, float] = {}  # represent the 2D array of distances in dijkstra algorithm
+        priority_q: [] = []  # a list representing the priority Queue we used in EX2
+
+        total_dist = -1  # init the return dist
+        path = []
+
+        # in case one of the nodes is not in the graph
+        if source not in self.graph.nodes:
+            return 99999
+
+        heappush(priority_q, (0.0, self.get_graph().get_all_v().get(source)))
+        deltas[source] = 0.0
+
+        while len(priority_q) > 0:
+
+            node_distance, node = heappop(priority_q)  # Extract node with minimum delta(dist) and its delta
+
+            node.tag = 1
+
+            # iterate over the neighbors of node (out edges)
+            for ngbr_id, ngbr_w in self.get_graph().all_out_edges_of_node(node.key).items():
+
+                neighbour: Node = self.get_graph().get_all_v().get(ngbr_id)  # neighbor node
+
+                if neighbour.tag == 1:  # if the node already visited, skip him
+                    continue
+
+                new_neighbour_delta = deltas.get(node.key) + ngbr_w  # calculating the new delta
+                self.relax(new_neighbour_delta, deltas, neighbour, priority_q, ngbr_id, node)  # relax the map
+
+        # Reset tags back to 0 when finished
+        self.reset_tags()
+        # find the maximum path from node to any node
+        max_sp = -1
+        for w in deltas.values():
+            if w > max_sp:
+                max_sp = w
+
+        return max_sp
+
+    def plot_graph(self) -> None:  # TO DO PROPERLY
+        xs = []
+        ys = []
+
+        nodes = self.get_graph().get_all_v()
+
+        for n in nodes.values():
+            if not n.pos:
+                continue
+
+            xs.append(n.pos.x)
+            ys.append(n.pos.y)
+
+            plt.text(n.pos.x, n.pos.y, n.key,
+                     va='top',
+                     ha='right',
+                     color='midnightblue',
+                     fontsize=9,
+                     bbox=dict(boxstyle='square, pad=0.2', ec='gray', fc='yellow', alpha=0.65),
+                     zorder=99)
+
+            for connected_node_id in self.get_graph().all_out_edges_of_node(n.key):
+                connected_node = nodes.get(connected_node_id)
+
+                if not connected_node.pos:
+                    continue
+
+                x = n.pos.x
+                y = n.pos.y
+                plt.annotate("",
+                             xy=(connected_node.pos.x, connected_node.pos.y),
+                             xycoords='data',
+                             xytext=(x, y),
+                             textcoords='data',
+                             arrowprops=dict(arrowstyle="->", color='midnightblue',
+                                             connectionstyle="arc3,rad={}".format(0.15)),
+                             )
+
+        plt.scatter(xs, ys, color='gray')
+        plt.draw()
+        plt.show()

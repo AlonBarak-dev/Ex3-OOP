@@ -56,3 +56,40 @@ class TestGraphAlgo(unittest.TestCase):
 
         # print(path)
         # print(dist)
+
+    def test_centerPoint(self):
+        graph_algo = GraphAlgo()
+        graph_algo.load_from_json("../../data/A0.json")
+        center, dist = graph_algo.centerPoint()
+        self.assertEqual(center, 7)
+        self.assertEqual(dist, 6.806805834715163)
+
+        graph_algo.load_from_json("../../data/A1.json")
+        center, dist = graph_algo.centerPoint()
+        self.assertEqual(center, 8)
+        self.assertEqual(dist, 9.925289024973141)
+
+        graph_algo.load_from_json("../../data/A2.json")
+        center, dist = graph_algo.centerPoint()
+        self.assertEqual(center, 0)
+        self.assertEqual(dist, 7.819910602212574)
+
+        graph_algo.load_from_json("../../data/A3.json")
+        center, dist = graph_algo.centerPoint()
+        self.assertEqual(center, 2)
+        self.assertEqual(dist, 8.182236568942237)
+
+        graph_algo.load_from_json("../../data/A4.json")
+        center, dist = graph_algo.centerPoint()
+        self.assertEqual(center, 6)
+        self.assertEqual(dist, 8.071366078651435)
+
+        graph_algo.load_from_json("../../data/A5.json")
+        center, dist = graph_algo.centerPoint()
+        self.assertEqual(center, 40)
+        self.assertEqual(dist,  9.291743173960954)
+
+    def test_plot_graph(self):
+        graph_algo = GraphAlgo()
+        graph_algo.load_from_json("../../data/A2.json")
+        graph_algo.plot_graph()
