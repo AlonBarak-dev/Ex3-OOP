@@ -110,7 +110,7 @@ class GraphAlgo(GraphAlgoInterface):
                     continue
 
                 new_neighbour_delta = deltas.get(node.key) + ngbr_w  # calculating the new delta
-                self.relax(new_neighbour_delta,deltas,neighbour,priority_q,ngbr_id,node)        # relax the map
+                self.relax(new_neighbour_delta, deltas, neighbour, priority_q, ngbr_id, node)  # relax the map
 
         if dest_node is not None:  # Reached the desired Node (there is a path)
             total_dist = deltas.get(destination)
@@ -122,7 +122,8 @@ class GraphAlgo(GraphAlgoInterface):
         result = (total_dist, path)  # the result tuple with its new data (the total distance of the path, the path)
         return result
 
-    def relax(self, new_neighbour_delta:float, deltas: Dict[int, float],neighbour:Node,priority_q:list,ngbr_id:int,node:Node):
+    def relax(self, new_neighbour_delta: float, deltas: Dict[int, float], neighbour: Node, priority_q: list,
+              ngbr_id: int, node: Node):
         if new_neighbour_delta < deltas.get(ngbr_id, float("inf")):
             heappush(priority_q, (new_neighbour_delta, neighbour))
             deltas[ngbr_id] = new_neighbour_delta
@@ -164,7 +165,73 @@ class GraphAlgo(GraphAlgoInterface):
         :param node_lst: A list of nodes id's
         :return: A list of the nodes id's in the path, and the overall distance
         """
-        pass
+
+        path: list = []  # the returned path
+        total_dist = 0
+        visited: list = []
+        # set all tags to unvisited(0)
+        self.reset_tags()
+
+        v = node_lst[0]  # start Node
+        path.append(v)
+        self.get_graph().nodes[v].tag = 1  # mark as visited
+        visited.append(v)
+        # loop until all wanted nodes are visited
+        while len(visited) < len(node_lst):
+
+            u, dist, path_vu = self.min_shortest_path(v, node_lst)  # return the closest node to v
+            # if u in visited:
+            #     return ([], float(('inf')))
+            total_dist += dist
+            for n in path_vu:
+                if n == path[len(path) - 1]:
+                    continue
+                if n in node_lst:
+                    self.graph.nodes[n].set_tag(1)  # mark as visited
+                    if n not in visited:  # add to visited list
+                        visited.append(n)
+                path.append(n)
+
+            v = u  # move to the next node
+
+        return path, total_dist
+
+    def min_shortest_path(self, key: int, node_lst: List[int]) -> (int, float, List[int]):
+        """
+        This method return the nearest node to key as well as the distance between them
+        and the path from key to the nearest node.
+        :param key: the id of the source node
+        :param node_lst: list of nodes should be "visited"
+        :return int: the nearest node's ID
+        :return float: the distance from key to the nearest node
+        :return List[int]: the path from key to its nearest node
+        """
+
+        min_dist = 99999
+        dest_node = key
+        final_path: List[int] = []
+        # loop over the unvisited nodes in node_lst
+        for i in node_lst:
+            if self.graph.nodes[i].get_tag() == 0 and self.graph.nodes[i].key != key:
+                # remember the nodes who were already visited
+                visited = []
+                for node in self.graph.nodes.values():
+                    if node.tag == 1:
+                        visited.append(node.key)
+
+                dist, path = self.shortest_path(key, i)  # find the shortest path from key to i
+
+                # remember the nodes who were already visited
+                for node in visited:
+                    self.graph.nodes[node].set_tag(1)
+
+                    # in case we found a closer node, update
+                if dist < min_dist:
+                    min_dist = dist
+                    final_path = path
+                    dest_node = i
+
+        return dest_node, min_dist, final_path
 
     def plot_graph(self) -> None:
         pass

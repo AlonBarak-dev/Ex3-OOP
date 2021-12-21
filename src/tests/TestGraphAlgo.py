@@ -32,11 +32,27 @@ class TestGraphAlgo(unittest.TestCase):
         graph_algo.load_from_json(self.file_name)
 
         dist, path = graph_algo.shortest_path(0, 7)
-        #print(path)
+        # print(path)
         self.assertEqual(dist, 5.653293226161572)
         self.assertEqual([0, 10, 9, 8, 7], path)
 
         dist, path = graph_algo.shortest_path(0, 8888887)
-        #print(path)
+        # print(path)
         self.assertEqual(dist, -1)
         self.assertEqual(path, [])
+
+    def test_TSP(self):
+        graph_algo = GraphAlgo()
+        graph_algo.load_from_json("../../data/A0.json")
+
+        path, dist = graph_algo.TSP([0, 1, 2, 3, 4, 7])
+        self.assertEqual(dist, 10.240617338114607)
+        self.assertEqual(path, [0, 1, 2, 3, 4, 5, 6, 7])
+
+        graph_algo.load_from_json("../../data/A4.json")
+        path, dist = graph_algo.TSP([0, 1, 5, 3, 4, 12])
+        self.assertEqual(dist, 14.598487672362879)
+        self.assertEqual(path, [0, 1, 2, 3, 4, 5, 6, 15, 14, 13, 12])
+
+        # print(path)
+        # print(dist)

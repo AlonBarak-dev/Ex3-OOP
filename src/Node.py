@@ -88,5 +88,11 @@ class Node(object):
     def get_pos(self) -> GeoLocation:
         return self.pos
 
+    def set_tag(self, tag: int):
+        self.tag = tag
+
+    def get_tag(self):
+        return self.tag
+
     def __repr__(self):
         return "{}: |edges out| {} |edges in| {}".format(self.key, len(self.edges_out), len(self.edges_in))
