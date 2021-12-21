@@ -1,3 +1,5 @@
+import math
+import random
 import traceback
 from _heapq import heappop
 from abc import ABC
@@ -304,6 +306,26 @@ class GraphAlgo(GraphAlgoInterface):
 
         return max_sp
 
+    def generate_pos(self,node: Node):
+            center_id, dist = self.centerPoint()
+
+            if self.graph.nodes[center_id].pos is None:
+                self.graph.nodes[center_id].pos = GeoLocation(1.0,1.5,0.0)
+
+            center_node = self.graph.nodes[center_id]
+
+            center_x = center_node.pos.x
+            center_y = center_node.pos.y
+
+            theta = random.uniform(0, 2 * math.pi)
+            # radius = random.gauss(1.0, 0.1)
+            radius, path = self.shortest_path(node.key, center_id)
+            x = center_x + radius * math.cos(theta)
+            y = center_y + radius * math.sin(theta)
+
+            node.pos = GeoLocation(x,y,0.0)
+
+
     def plot_graph(self) -> None:  # TO DO PROPERLY
         xs = []
         ys = []
@@ -312,7 +334,7 @@ class GraphAlgo(GraphAlgoInterface):
 
         for n in nodes.values():
             if not n.pos:
-                continue
+                self.generate_pos(n)
 
             xs.append(n.pos.x)
             ys.append(n.pos.y)
@@ -320,28 +342,28 @@ class GraphAlgo(GraphAlgoInterface):
             plt.text(n.pos.x, n.pos.y, n.key,
                      va='top',
                      ha='right',
-                     color='midnightblue',
+                     color='red',
                      fontsize=9,
-                     bbox=dict(boxstyle='square, pad=0.2', ec='gray', fc='yellow', alpha=0.65),
+                     bbox=dict(boxstyle='square, pad=0.2', ec='gray', fc='pink', alpha=0.65),
                      zorder=99)
 
-            for connected_node_id in self.get_graph().all_out_edges_of_node(n.key):
-                connected_node = nodes.get(connected_node_id)
+            for node_id in self.get_graph().all_out_edges_of_node(n.key):
+                node_c = nodes.get(node_id)
 
-                if not connected_node.pos:
-                    continue
+                if not node_c.pos:
+                    self.generate_pos(node_c)
 
                 x = n.pos.x
                 y = n.pos.y
                 plt.annotate("",
-                             xy=(connected_node.pos.x, connected_node.pos.y),
+                             xy=(node_c.pos.x, node_c.pos.y),
                              xycoords='data',
                              xytext=(x, y),
                              textcoords='data',
-                             arrowprops=dict(arrowstyle="->", color='midnightblue',
+                             arrowprops=dict(arrowstyle="->", color='black',
                                              connectionstyle="arc3,rad={}".format(0.15)),
                              )
 
-        plt.scatter(xs, ys, color='gray')
+        plt.scatter(xs, ys, color='blue')
         plt.draw()
         plt.show()

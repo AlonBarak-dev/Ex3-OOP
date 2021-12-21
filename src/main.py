@@ -21,6 +21,7 @@ def check():
     check0()
     check1()
     check2()
+    check3()
 
 
 def check0():
@@ -82,26 +83,26 @@ def check2():
     print(g_algo.TSP([1, 2, 3]))
     g_algo.plot_graph()
 
-#
-# def check3():
-#     """ This function tests the naming, basic testing over A5 json file.
-#       :return:
-#       """
-#     g = DiGraph()  # creates an empty directed graph
-#     for n in range(5):
-#         g.add_node(n)
-#     g.add_edge(0, 1, 1)
-#     g.add_edge(0, 4, 5)
-#     g.add_edge(1, 0, 1.1)
-#     g.add_edge(1, 2, 1.3)
-#     g.add_edge(1, 3, 1.9)
-#     g.add_edge(2, 3, 1.1)
-#     g.add_edge(3, 4, 2.1)
-#     g.add_edge(4, 2, .5)
-#     g_algo = GraphAlgo(g)
-#     print(g_algo.centerPoint())
-#     print(g_algo.TSP([1, 2, 4]))
-#     g_algo.plot_graph()
+
+def check3():
+    """ This function tests the naming, basic testing over A5 json file.
+      :return:
+      """
+    g = DiGraph()  # creates an empty directed graph
+    for n in range(5):
+        g.add_node(n)
+    g.add_edge(0, 1, 1)
+    g.add_edge(0, 4, 5)
+    g.add_edge(1, 0, 1.1)
+    g.add_edge(1, 2, 1.3)
+    g.add_edge(1, 3, 1.9)
+    g.add_edge(2, 3, 1.1)
+    g.add_edge(3, 4, 2.1)
+    g.add_edge(4, 2, .5)
+    g_algo = GraphAlgo(g)
+    print(g_algo.centerPoint())
+    print(g_algo.TSP([1, 2, 4]))
+    g_algo.plot_graph()
 
 
 if __name__ == '__main__':

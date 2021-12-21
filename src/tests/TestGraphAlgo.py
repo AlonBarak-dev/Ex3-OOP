@@ -93,3 +93,14 @@ class TestGraphAlgo(unittest.TestCase):
         graph_algo = GraphAlgo()
         graph_algo.load_from_json("../../data/A2.json")
         graph_algo.plot_graph()
+        graph_algo.get_graph().remove_node(5)
+        graph_algo.get_graph().remove_node(4)
+        graph_algo.get_graph().remove_node(3)
+        graph_algo.get_graph().remove_node(7)
+        graph_algo.get_graph().remove_node(20)
+        graph_algo.get_graph().remove_node(15)
+        graph_algo.plot_graph()
+        graph_algo.load_from_json("../../data/T0.json")
+        graph_algo.plot_graph()
+
+
