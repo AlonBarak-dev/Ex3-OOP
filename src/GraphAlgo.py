@@ -19,8 +19,11 @@ class GraphAlgo(GraphAlgoInterface):
     It allows the User to run different algorithms on the Graph
     """
 
-    def __init__(self):
-        self.graph: DiGraph = DiGraph()
+    def __init__(self, g: DiGraph = None):
+        if g is not None:
+            self.graph = g
+        else:
+            self.graph: DiGraph = DiGraph()
 
     def get_graph(self) -> GraphInterface:
         return self.graph
@@ -81,12 +84,12 @@ class GraphAlgo(GraphAlgoInterface):
         deltas: Dict[int, float] = {}  # represent the 2D array of distances in dijkstra algorithm
         priority_q: [] = []  # a list representing the priority Queue we used in EX2
 
-        total_dist = -1  # init the return dist
+        total_dist = float(('inf'))  # init the return dist
         path = []
 
         # in case one of the nodes is not in the graph
         if id1 not in self.graph.nodes or id2 not in self.graph.nodes:
-            result = (total_dist, path)  # default tuple
+            result = (float(('inf')), path)  # default tuple
             return result
 
         heappush(priority_q, (0.0, self.get_graph().get_all_v().get(source)))

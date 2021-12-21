@@ -38,7 +38,7 @@ class TestGraphAlgo(unittest.TestCase):
 
         dist, path = graph_algo.shortest_path(0, 8888887)
         # print(path)
-        self.assertEqual(dist, -1)
+        self.assertEqual(dist, float(('inf')))
         self.assertEqual(path, [])
 
     def test_TSP(self):
