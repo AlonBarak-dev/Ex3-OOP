@@ -306,39 +306,55 @@ class GraphAlgo(GraphAlgoInterface):
 
         return max_sp
 
-    def generate_pos(self,node: Node):
-            center_id, dist = self.centerPoint()
+    def generate_pos(self, node: Node):
+        """
+        this method generate position for a node base on its distance from the Center node
+        in the graph.
+        :param node: the position less node
+        """
+        center_id, dist = self.centerPoint()        # finds the center in the graph
 
-            if self.graph.nodes[center_id].pos is None:
-                self.graph.nodes[center_id].pos = GeoLocation(1.0,1.5,0.0)
+        if self.graph.nodes[center_id].pos is None:     # if center also dont have position, generate constant position
+            self.graph.nodes[center_id].pos = GeoLocation(1.0, 1.5, 0.0)
 
-            center_node = self.graph.nodes[center_id]
+        center_node = self.graph.nodes[center_id]       # the center node
+        # extract the center position (x,y)
+        center_x = center_node.pos.x
+        center_y = center_node.pos.y
+        # generate x,y values for the given node
+        theta = random.uniform(0, 2 * math.pi)      # random angle theta
+        # radius = random.gauss(1.0, 0.1)
+        radius, path = self.shortest_path(node.key, center_id)      # radius = distance from center
+        # x and y
+        x = center_x + radius * math.cos(theta)
+        y = center_y + radius * math.sin(theta)
+        # create a new position for the node
+        node.pos = GeoLocation(x, y, 0.0)
 
-            center_x = center_node.pos.x
-            center_y = center_node.pos.y
+    def plot_graph(self) -> None:
+        """
+        Plots the graph.
+        If the nodes have a position, the nodes will be placed there.
+        Otherwise, they will be placed in a random but elegant manner.
+        @return: None
+        """
 
-            theta = random.uniform(0, 2 * math.pi)
-            # radius = random.gauss(1.0, 0.1)
-            radius, path = self.shortest_path(node.key, center_id)
-            x = center_x + radius * math.cos(theta)
-            y = center_y + radius * math.sin(theta)
-
-            node.pos = GeoLocation(x,y,0.0)
-
-
-    def plot_graph(self) -> None:  # TO DO PROPERLY
+        # define the Xs and Ys lists who will be used for scattering
         xs = []
         ys = []
 
-        nodes = self.get_graph().get_all_v()
+        nodes = self.get_graph().get_all_v()        # the graph's nodes
 
+        # loop every node in the graph
         for n in nodes.values():
+            # if it has no position -> generate a random one
             if not n.pos:
                 self.generate_pos(n)
 
+            # add the node position in the lists
             xs.append(n.pos.x)
             ys.append(n.pos.y)
-
+            # node attributes
             plt.text(n.pos.x, n.pos.y, n.key,
                      va='top',
                      ha='right',
@@ -347,14 +363,17 @@ class GraphAlgo(GraphAlgoInterface):
                      bbox=dict(boxstyle='square, pad=0.2', ec='gray', fc='pink', alpha=0.65),
                      zorder=99)
 
+            # lop every out_edge of the specific node
             for node_id in self.get_graph().all_out_edges_of_node(n.key):
-                node_c = nodes.get(node_id)
+                node_c = nodes.get(node_id)     # a neighbour of node
 
+                # if neighbour dont have position, generate one
                 if not node_c.pos:
                     self.generate_pos(node_c)
 
                 x = n.pos.x
                 y = n.pos.y
+                # edge attributes
                 plt.annotate("",
                              xy=(node_c.pos.x, node_c.pos.y),
                              xycoords='data',
@@ -364,6 +383,7 @@ class GraphAlgo(GraphAlgoInterface):
                                              connectionstyle="arc3,rad={}".format(0.15)),
                              )
 
+        # print the nodes and the edges
         plt.scatter(xs, ys, color='blue')
         plt.draw()
         plt.show()

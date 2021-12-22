@@ -1,5 +1,3 @@
-import json
-
 from src.GraphInterface import GraphInterface
 from src.Edge import Edge
 from src.Node import Node
@@ -203,14 +201,18 @@ class DiGraph(GraphInterface):
         return "Graph: |V|={} , |E|={}".format(self.v_size(), self.e_size())
 
     def to_dict(self) -> dict:
+        """
+        this method return a dict representing the graph
+        """
 
+        # define the struct of the dict
         dict_res = {'Edges': [],
                     'Nodes': []}
-
+        # loop every node and add its dict to dict_res
         for node in self.nodes.values():
             node_dict = node.to_dict()
             dict_res['Nodes'].append(node_dict)
-
+        # loop every edge and add its dict to dict_res
         for edge in self.edges:
             edge_dict = edge.to_dict()
             dict_res['Edges'].append(edge_dict)

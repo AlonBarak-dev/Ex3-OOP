@@ -1,7 +1,6 @@
 from src import DiGraph, GraphInterface
 from src.GraphAlgo import GraphAlgo
 import unittest
-import os
 
 
 class TestGraphAlgo(unittest.TestCase):
@@ -35,7 +34,6 @@ class TestGraphAlgo(unittest.TestCase):
         # assert graph_algo.load_from_json("../../data/10000Nodes.json") is True, "10000 nodes went wrong"
         # assert graph_algo.save_to_json("../../data/10000Nodes.json") is True, "The save process failed"
 
-
     def test_get_graph(self):
         graph_algo = GraphAlgo()
         assert graph_algo.get_graph().mode_count == 0, "returned graph instead of None"
@@ -68,7 +66,6 @@ class TestGraphAlgo(unittest.TestCase):
         # graph_algo.load_from_json("../../data/10000Nodes.json")
         # dist, path = graph_algo.shortest_path(74, 8587)
         # print(dist, path)
-
 
     def test_TSP(self):
         graph_algo = GraphAlgo()

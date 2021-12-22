@@ -1,5 +1,4 @@
 from src.GeoLocation import GeoLocation
-from src.Links import Links
 
 
 class Node(object):
@@ -22,7 +21,6 @@ class Node(object):
         self.weight: float = 0.0
         self.info: str = ""
 
-
     @classmethod
     def from_dict(cls, data: dict) -> 'Node':
         """
@@ -35,7 +33,6 @@ class Node(object):
         # if 'id' not in data or 'key' not in data:
         #     raise ValueError("Cant create a Node without id and data")
         key: int = data.get('id')  # initialize the node ID
-
 
         # initialize the node location
         pos = data.get('pos')
@@ -72,15 +69,6 @@ class Node(object):
         if not isinstance(geo, GeoLocation):
             raise ValueError("should be GeoLocation type")
         self.pos = geo
-
-    def set_edges_dict(self, edges: dict):
-        """
-        set the edges dict to a new edges dict
-        """
-        if Links.IN not in edges or Links.OUT not in edges:
-            raise ValueError("missing values")
-        self.edges_in = edges.get('EDGES_IN')
-        self.edges_out = edges.get('EDGES_OUT')
 
     def get_key(self) -> int:
         return self.key
