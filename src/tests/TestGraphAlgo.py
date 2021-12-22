@@ -12,6 +12,12 @@ class TestGraphAlgo(unittest.TestCase):
         assert graph_algo.load_from_json(self.file_name) is True, "load from json failed"
         assert graph_algo.get_graph().v_size() == 11, "load wasn't full"
         assert graph_algo.get_graph().e_size() == 22, "load wasn't full"
+        """
+        the below tests were used to determine the runTime for graphs with 1000 and 10000 nodes.
+        no need to run them -> needed files are not included.
+        """
+        # assert graph_algo.load_from_json("../../data/1000Nodes.json") is True, "1000 nodes went wrong"
+        # assert graph_algo.load_from_json("../../data/10000Nodes.json") is True, "10000 nodes went wrong"
 
     def test_save_to_json(self):
         graph_algo = GraphAlgo()
@@ -20,6 +26,15 @@ class TestGraphAlgo(unittest.TestCase):
         graph_algo.load_from_json("../../data/output0.json")
         assert graph_algo.get_graph().v_size() == 11, "save wasn't full"
         assert graph_algo.get_graph().e_size() == 22, "save wasn't full"
+        """
+        the below tests were used to determine the runTime for graphs with 1000 and 10000 nodes.
+        no need to run them -> needed files are not included.
+        """
+        # assert graph_algo.load_from_json("../../data/1000Nodes.json") is True, "1000 nodes went wrong"
+        # assert graph_algo.save_to_json("../../data/1000Nodes.json") is True, "The save process failed"
+        # assert graph_algo.load_from_json("../../data/10000Nodes.json") is True, "10000 nodes went wrong"
+        # assert graph_algo.save_to_json("../../data/10000Nodes.json") is True, "The save process failed"
+
 
     def test_get_graph(self):
         graph_algo = GraphAlgo()
@@ -41,6 +56,20 @@ class TestGraphAlgo(unittest.TestCase):
         self.assertEqual(dist, float(('inf')))
         self.assertEqual(path, [])
 
+        """
+        the below tests were used to determine the runTime for graphs with 1000 and 10000 nodes.
+        no need to run them -> needed files are not included.
+        """
+
+        # graph_algo.load_from_json("../../data/1000Nodes.json")
+        # dist, path = graph_algo.shortest_path(0, 887)
+        # print(dist, path)
+
+        # graph_algo.load_from_json("../../data/10000Nodes.json")
+        # dist, path = graph_algo.shortest_path(74, 8587)
+        # print(dist, path)
+
+
     def test_TSP(self):
         graph_algo = GraphAlgo()
         graph_algo.load_from_json("../../data/A0.json")
@@ -54,8 +83,19 @@ class TestGraphAlgo(unittest.TestCase):
         self.assertEqual(dist, 14.598487672362879)
         self.assertEqual(path, [0, 1, 2, 3, 4, 5, 6, 15, 14, 13, 12])
 
-        # print(path)
-        # print(dist)
+        """
+        the below tests were used to determine the runTime for graphs with 1000 and 10000 nodes.
+        no need to run them -> needed files are not included.
+        """
+        # graph_algo.load_from_json("../../data/1000Nodes.json")
+        # path, dist = graph_algo.TSP([0, 2, 5, 58, 585, 684, 245, 87, 9, 54, 244, 100, 787, 765, 20, 411, 24, 7])
+        # assert dist is not None, "should've returned a float number representing the distance of the path"
+        # assert path is not None, "should've returned a list og int representing the path"
+
+        # graph_algo.load_from_json("../../data/10000Nodes.json")
+        # path, dist = graph_algo.TSP([0, 2, 5, 58, 5854, 684, 245, 87, 9, 54, 244, 100, 787, 7865, 20, 411, 24, 7])
+        # assert dist is not None, "should've returned a float number representing the distance of the path"
+        # assert path is not None, "should've returned a list og int representing the path"
 
     def test_centerPoint(self):
         graph_algo = GraphAlgo()
@@ -87,7 +127,19 @@ class TestGraphAlgo(unittest.TestCase):
         graph_algo.load_from_json("../../data/A5.json")
         center, dist = graph_algo.centerPoint()
         self.assertEqual(center, 40)
-        self.assertEqual(dist,  9.291743173960954)
+        self.assertEqual(dist, 9.291743173960954)
+
+        """
+        the below tests were used to determine the runTime for graphs with 1000 and 10000 nodes.
+        no need to run them -> needed files are not included.
+        """
+        # graph_algo.load_from_json("../../data/1000Nodes.json")
+        # center, dist = graph_algo.centerPoint()
+        # self.assertEqual(center, 362)
+        #
+        # graph_algo.load_from_json("../../data/10000Nodes.json")
+        # center, dist = graph_algo.centerPoint()
+        # self.assertEqual(center, 3846)
 
     def test_plot_graph(self):
         graph_algo = GraphAlgo()
@@ -104,3 +156,5 @@ class TestGraphAlgo(unittest.TestCase):
         graph_algo.plot_graph()
 
 
+if __name__ == '__main__':
+    unittest.main()
