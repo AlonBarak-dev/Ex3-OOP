@@ -83,3 +83,7 @@ print(g_algo.TSP([1, 2, 4]))
 ![A2json-after_remove](https://user-images.githubusercontent.com/80644255/147409269-4eef5439-4de8-4f9d-b4e3-1d3054ee6657.png)
 - #### A plot in a random but elegant manner for nodes without given positions in the graph:
 ![T0json](https://user-images.githubusercontent.com/80644255/147409439-d1158142-8a84-4a72-b23e-8fc7135a2e79.png)
+
+## UML diagram of the project:
+![image](https://user-images.githubusercontent.com/80644255/147421378-f371cca6-4fb6-4f43-a639-2228a8161db3.png)
+
