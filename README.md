@@ -76,3 +76,10 @@ print(g_algo.TSP([1, 2, 4]))
 
 ### Visual features <br>
 #### Exaples of visual feutures of our graphs that we worked on in the project:
+![A5json](https://user-images.githubusercontent.com/80644255/147408577-9962c8c0-86b3-47d2-9868-a1eb8f140b39.png)
+- #### A graph before a removal of nodes:
+![A2json-before_remove (1)](https://user-images.githubusercontent.com/80644255/147409248-ef204c0f-f71e-4e8e-93b2-18b7d9933a5f.png)
+- #### The same graph after the removal:
+![A2json-after_remove](https://user-images.githubusercontent.com/80644255/147409269-4eef5439-4de8-4f9d-b4e3-1d3054ee6657.png)
+- #### A plot in a random but elegant manner for nodes without given positions in the graph:
+![T0json](https://user-images.githubusercontent.com/80644255/147409439-d1158142-8a84-4a72-b23e-8fc7135a2e79.png)
