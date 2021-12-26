@@ -73,6 +73,6 @@ g_algo = GraphAlgo(g)
 print(g_algo.centerPoint())
 print(g_algo.TSP([1, 2, 4]))    
 ```
-<br>
+
 ### Visual features <br>
 #### Exaples of visual feutures of our graphs that we worked on in the project:
